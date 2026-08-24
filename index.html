@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Violence That Follows Her Home — TED-Ed Talk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#210F22;
+    --ink-2:#2C1730;
+    --ink-3:#3A1F3D;
+    --paper:#F7EFEA;
+    --paper-dim:#CDB9C4;
+    --alert:#FF6A54;
+    --alert-dim:#7A3226;
+    --gold:#E3AC4E;
+    --muted:#9A85960;
+    --muted:#A991A5;
+    --line:#4A2C4C;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 12% 15%, rgba(255,106,84,0.06) 0, transparent 40%),
+      radial-gradient(circle at 88% 80%, rgba(227,172,78,0.05) 0, transparent 42%),
+      radial-gradient(circle at 50% 50%, rgba(247,239,234,0.015) 0, transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .progress-track{
+    position:fixed; top:0; left:0; right:0; height:4px;
+    background:var(--ink-3); z-index:50;
+  }
+  .progress-fill{
+    height:100%; width:11.11%;
+    background:var(--alert);
+    transition:width .45s cubic-bezier(.65,0,.35,1);
+  }
+
+  .deck{ position:relative; height:100vh; width:100vw; z-index:1; }
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:center;
+    padding: clamp(28px,6vw,96px) clamp(28px,9vw,140px);
+    opacity:0; transform:translateY(18px);
+    transition:opacity .5s ease, transform .5s cubic-bezier(.2,.8,.3,1);
+    pointer-events:none;
+  }
+  .slide.active{ opacity:1; transform:translateY(0); pointer-events:auto; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.16em; text-transform:uppercase;
+    font-size:clamp(11px,1.1vw,13px);
+    color:var(--gold);
+    margin:0 0 18px 0;
+  }
+  .eyebrow b{color:var(--alert); font-weight:600;}
+
+  h1,h2,h3{ font-family:'Instrument Serif',serif; margin:0; color:var(--paper); font-weight:400; }
+  .headline{
+    font-size:clamp(32px,4.9vw,62px);
+    line-height:1.1;
+    max-width:17ch;
+  }
+  .headline em{ font-style:italic; color:var(--alert); }
+  .sub{
+    font-size:clamp(16px,1.6vw,21px);
+    color:var(--paper-dim);
+    margin-top:18px;
+    max-width:48ch;
+    line-height:1.55;
+  }
+  .source{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:auto;
+    padding-top:28px;
+  }
+  .source::before{content:"— "; color:var(--alert-dim);}
+
+  .tag{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--alert);
+    border:1px solid var(--alert-dim); border-radius:999px;
+    padding:5px 12px; width:fit-content;
+  }
+  .tag::before{content:"●"; font-size:8px;}
+
+  /* ===== Slide 1 : title ===== */
+  #s1 .headline{ font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(40px,6.6vw,88px); max-width:15ch; line-height:1.06;}
+  #s1 .sub{ font-size:clamp(17px,1.9vw,24px); color:var(--paper-dim); max-width:42ch;}
+  #s1 .mark{ width:64px; height:3px; background:var(--alert); margin-top:36px; }
+
+  /* ===== Slide 2 : hook ===== */
+  .hook-line{
+    font-family:'Instrument Serif',serif;
+    font-size:clamp(26px,3.4vw,40px);
+    line-height:1.3; max-width:19ch; color:var(--paper-dim); font-style:italic;
+  }
+  .stat-pill{
+    display:inline-flex; align-items:baseline; gap:14px;
+    margin-top:34px; background:var(--ink-2); border-radius:16px;
+    padding:20px 26px; width:fit-content; max-width:560px;
+  }
+  .stat-pill .num{
+    font-family:'IBM Plex Mono',monospace; font-size:clamp(30px,3.4vw,44px);
+    font-weight:600; color:var(--alert);
+  }
+  .stat-pill .lbl{ font-size:14.5px; color:var(--paper-dim); line-height:1.4; }
+
+  /* ===== Slide 3 : global stats row ===== */
+  .stat-row{ display:flex; gap:clamp(20px,3vw,48px); margin-top:44px; flex-wrap:wrap; }
+  .stat-block{ min-width:150px; }
+  .stat-block .num{
+    font-family:'IBM Plex Mono',monospace; font-size:clamp(34px,4.6vw,56px);
+    font-weight:600; color:var(--paper); line-height:1;
+  }
+  .stat-block.hot .num{ color:var(--alert); }
+  .stat-block .cap{ margin-top:10px; font-size:14px; color:var(--muted); max-width:20ch; line-height:1.4; }
+
+  /* ===== Slide 4 : brazil data ===== */
+  .grid4{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:36px; max-width:680px; }
+  .metric-card{ background:var(--ink-2); border-radius:12px; padding:18px 20px; }
+  .metric-card .num{ font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:26px; color:var(--gold); }
+  .metric-card.hot .num{ color:var(--alert); }
+  .metric-card .txt{ font-size:13px; color:var(--paper-dim); margin-top:6px; line-height:1.4; }
+
+  /* ===== Slide 5 : why list ===== */
+  .why-list{ margin-top:36px; display:flex; flex-direction:column; gap:22px; max-width:660px; }
+  .why-item{ display:flex; gap:18px; align-items:flex-start; }
+  .why-item .yr{
+    font-family:'IBM Plex Mono',monospace; color:var(--alert);
+    font-size:12px; min-width:104px; padding-top:4px; letter-spacing:.02em;
+  }
+  .why-item .tx{ font-size:16px; color:var(--paper-dim); line-height:1.55; }
+  .why-item .tx b{ color:var(--paper); font-weight:600; }
+
+  /* ===== Slide 6 : thesis ===== */
+  #s6{ align-items:center; text-align:center; }
+  .thesis{
+    font-family:'Instrument Serif',serif; font-style:italic;
+    font-size:clamp(25px,3.7vw,44px); line-height:1.42; max-width:21ch; color:var(--paper);
+  }
+  .thesis .hl{ color:var(--alert); font-style:normal; font-weight:700; font-family:'Inter',sans-serif; }
+  #s6 .eyebrow{ text-align:center; }
+
+  /* ===== Slide 7 : law cards ===== */
+  .card-row{ display:flex; gap:24px; margin-top:36px; flex-wrap:wrap; }
+  .card{ background:var(--ink-2); border-radius:14px; padding:26px 26px 24px; max-width:320px; flex:1; min-width:260px; }
+  .card .lawtag{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em;
+    color:var(--gold); text-transform:uppercase;
+  }
+  .card h3{ font-family:'Inter',sans-serif; font-size:18px; margin-top:10px; font-weight:600; line-height:1.3; }
+  .card p{ font-size:13.5px; color:var(--paper-dim); line-height:1.55; margin-top:10px; }
+  .caveat{
+    margin-top:30px; font-size:14.5px; color:var(--muted); max-width:54ch;
+    padding-top:16px; border-top:1px solid var(--line);
+  }
+  .caveat b{ color:var(--alert); }
+
+  /* ===== Slide 8 : proposal list ===== */
+  .prop-list{ margin-top:36px; display:flex; flex-direction:column; gap:24px; max-width:660px; }
+  .prop-item{ display:flex; gap:20px; }
+  .prop-item .n{
+    font-family:'Instrument Serif',serif; font-style:italic; font-size:30px;
+    color:var(--alert); min-width:34px;
+  }
+  .prop-item .tx h3{ font-size:17.5px; font-weight:600; color:var(--paper); font-family:'Inter',sans-serif; }
+  .prop-item .tx p{ font-size:14.5px; color:var(--paper-dim); margin-top:4px; line-height:1.5; }
+
+  /* ===== Slide 9 : closing ===== */
+  #s9{ align-items:center; text-align:center; }
+  #s9 .headline{ font-family:'Instrument Serif',serif; font-style:italic; font-size:clamp(28px,4.3vw,50px); max-width:19ch; text-align:center; }
+  #s9 .sub{ text-align:center; margin-left:auto; margin-right:auto; }
+  #s9 .eyebrow{ text-align:center; }
+
+  /* ===== nav ===== */
+  .nav{
+    position:fixed; bottom:26px; left:0; right:0;
+    display:flex; align-items:center; justify-content:center; gap:22px; z-index:60;
+  }
+  .nav-btn{
+    background:var(--ink-2); border:1px solid var(--line); color:var(--paper);
+    width:40px; height:40px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:16px; transition:background .2s;
+  }
+  .nav-btn:hover{ background:var(--ink-3); }
+  .nav-btn:disabled{ opacity:.3; cursor:default; }
+  .dots{ display:flex; gap:9px; }
+  .dots button{
+    width:8px; height:8px; border-radius:50%; border:none; background:var(--line);
+    cursor:pointer; padding:0; transition:background .2s, transform .2s;
+  }
+  .dots button.on{ background:var(--alert); transform:scale(1.3); }
+  .counter{
+    position:fixed; bottom:30px; right:34px;
+    font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); z-index:60;
+  }
+
+  @media (max-width:640px){
+    .slide{ padding:24px 24px; }
+    .stat-row, .card-row{ gap:18px; }
+    .grid4{ grid-template-columns:1fr; }
+    .counter{ display:none; }
+    .nav{ bottom:16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1 : TITLE -->
+  <section class="slide active" id="s1">
+    <p class="eyebrow"><b>TED-Ed Talk</b> · Argumentative Essay Project · Tema 9</p>
+    <h1 class="headline">The Violence That<br>Follows Her Home</h1>
+    <p class="sub">Confronting misogyny and gender-based violence in Brazil's digital spaces.</p>
+    <div class="mark"></div>
+  </section>
+
+  <!-- 2 : HOOK -->
+  <section class="slide" id="s2">
+    <p class="eyebrow">The Problem</p>
+    <div class="hook-line">A comment section can be a crime scene.</div>
+    <div class="stat-pill">
+      <span class="num">8,728</span>
+      <span class="lbl">reports of online misogyny filed with Brazil's national cybercrime hotline in 2025 — up from 2,686 in 2024. A 224% jump in a single year.</span>
+    </div>
+    <p class="source">SaferNet Brasil, Central Nacional de Denúncias, 2025</p>
+  </section>
+
+  <!-- 3 : GLOBAL CONTEXT -->
+  <section class="slide" id="s3">
+    <p class="eyebrow">Not Brazil's Problem Alone</p>
+    <h2 class="headline">Online violence against women is global. <em>Our region bleeds worst.</em></h2>
+    <div class="stat-row">
+      <div class="stat-block">
+        <div class="num">38%</div>
+        <div class="cap">of women worldwide have personally experienced online violence</div>
+      </div>
+      <div class="stat-block">
+        <div class="num">85%</div>
+        <div class="cap">have witnessed it happening to other women</div>
+      </div>
+      <div class="stat-block hot">
+        <div class="num">91%</div>
+        <div class="cap">in Latin America & the Caribbean — the highest of any world region</div>
+      </div>
+    </div>
+    <p class="source">Economist Intelligence Unit, "Measuring the Prevalence of Online Violence Against Women," 2021 (51-country study)</p>
+  </section>
+
+  <!-- 4 : BRAZIL DATA -->
+  <section class="slide" id="s4">
+    <p class="eyebrow">The Brazilian Picture</p>
+    <h2 class="headline">Behind every number, a name that stopped feeling safe online.</h2>
+    <div class="grid4">
+      <div class="metric-card hot">
+        <div class="num">87,689</div>
+        <div class="txt">unique cybercrime reports in 2025 — up 28% from 2024</div>
+      </div>
+      <div class="metric-card hot">
+        <div class="num">2nd</div>
+        <div class="txt">most-reported category overall: misogyny and discrimination against women</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">+115%</div>
+        <div class="txt">rise in helpline requests about non-consensual exposure of intimate images (576 cases)</div>
+      </div>
+      <div class="metric-card">
+        <div class="num">218 → 452</div>
+        <div class="txt">digital racist-abuse reports, 2020–2024 — Black women report it most</div>
+      </div>
+    </div>
+    <p class="source">SaferNet Brasil, 2025; Aláfia Lab</p>
+  </section>
+
+  <!-- 5 : WHY -->
+  <section class="slide" id="s5">
+    <p class="eyebrow">The Argument: Why Now</p>
+    <h2 class="headline">Old hatred, new tools.</h2>
+    <div class="why-list">
+      <div class="why-item">
+        <div class="yr">Viral trend</div>
+        <div class="tx"><b>"Training in case she says no":</b> videos simulating aggression against women circulated 2023–2025, some drawing over 175,000 interactions per post.</div>
+      </div>
+      <div class="why-item">
+        <div class="yr">2023–2025</div>
+        <div class="tx"><b>AI-generated deepfakes</b> — at least 16 documented cases involving 72+ victims. Organized groups now sell fake nude and sex-video generation as a paid service.</div>
+      </div>
+      <div class="why-item">
+        <div class="yr">Coordinated</div>
+        <div class="tx">Online communities openly share tactics for producing and spreading this content — while platforms remove it only after the harm is already viral.</div>
+      </div>
+    </div>
+    <p class="source">SaferNet Brasil; Núcleo Jornalismo, 2026</p>
+  </section>
+
+  <!-- 6 : THESIS -->
+  <section class="slide" id="s6">
+    <p class="eyebrow">My Thesis</p>
+    <p class="thesis">Brazil cannot keep treating digital gender violence as <span class="hl">"online drama."</span> It is real violence, accelerated by AI, and it demands the same urgency, funding and enforcement as violence in the street or in the home.</p>
+  </section>
+
+  <!-- 7 : LAWS -->
+  <section class="slide" id="s7">
+    <p class="eyebrow">The Argument: The Legal Response</p>
+    <h2 class="headline">The law is catching up — but not fast enough.</h2>
+    <div class="card-row">
+      <div class="card">
+        <p class="lawtag">Law 13.718/2018 — Art. 218-C</p>
+        <h3>Criminalizes non-consensual sharing</h3>
+        <p>Sharing intimate images or video without consent: 1 to 5 years in prison, increased by a third to two-thirds when done by an ex-partner or for revenge.</p>
+      </div>
+      <div class="card">
+        <p class="lawtag">Law 15.123/2025 — Art. 147-B</p>
+        <h3>Targets AI-driven abuse</h3>
+        <p>Adds a 50% sentence increase for psychological violence against women when the offender uses AI or deepfake tools — Brazil's newest direct answer to this crisis.</p>
+      </div>
+    </div>
+    <p class="caveat">But Brazil still has <b>no general deepfake law</b>. A broader bill (PL 1.884/2025) remains stuck in Congress, and platforms are not yet legally required to remove this content on their own.</p>
+  </section>
+
+  <!-- 8 : PROPOSAL -->
+  <section class="slide" id="s8">
+    <p class="eyebrow">My Proposal for Intervention</p>
+    <h2 class="headline">Three ways to close the gap between law and enforcement.</h2>
+    <div class="prop-list">
+      <div class="prop-item">
+        <div class="n">1</div>
+        <div class="tx">
+          <h3>A legal 24-hour takedown rule</h3>
+          <p>Require platforms to remove reported intimate-image and deepfake content within 24 hours — by law, not as a voluntary courtesy.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="n">2</div>
+        <div class="tx">
+          <h3>Digital forensics in every Delegacia da Mulher</h3>
+          <p>Equip and train Brazil's women's police stations to trace and prosecute AI-generated abuse, not just report it.</p>
+        </div>
+      </div>
+      <div class="prop-item">
+        <div class="n">3</div>
+        <div class="tx">
+          <h3>Consent education before the harm starts</h3>
+          <p>Bring digital consent and citizenship into the school curriculum — prevention, not just punishment after the fact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 : CLOSING -->
+  <section class="slide" id="s9">
+    <p class="eyebrow">Closing</p>
+    <h2 class="headline">The internet doesn't have to be a second scene of the crime.</h2>
+    <p class="sub">What Brazil builds into its laws today decides whether it becomes one.</p>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" aria-label="Previous slide">‹</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" aria-label="Next slide">›</button>
+</div>
+<div class="counter" id="counter">01 / 09</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.addEventListener('click', () => go(i));
+    dotsWrap.appendChild(b);
+  });
+  const dotEls = Array.from(dotsWrap.children);
+
+  const progressFill = document.getElementById('progressFill');
+  const counter = document.getElementById('counter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function render(){
+    slides.forEach((s,i) => s.classList.toggle('active', i === idx));
+    dotEls.forEach((d,i) => d.classList.toggle('on', i === idx));
+    progressFill.style.width = ((idx+1)/total*100) + '%';
+    counter.textContent = String(idx+1).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+  }
+  function go(i){
+    idx = Math.max(0, Math.min(total - 1, i));
+    render();
+  }
+  prevBtn.addEventListener('click', () => go(idx - 1));
+  nextBtn.addEventListener('click', () => go(idx + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); go(idx + 1); }
+    if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); go(idx - 1); }
+    if(e.key === 'Home'){ go(0); }
+    if(e.key === 'End'){ go(total - 1); }
+  });
+
+  let touchX = null;
+  document.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; });
+  document.addEventListener('touchend', (e) => {
+    if(touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(dx > 60) go(idx - 1);
+    if(dx < -60) go(idx + 1);
+    touchX = null;
+  });
+
+  render();
+</script>
+
+</body>
+</html>
